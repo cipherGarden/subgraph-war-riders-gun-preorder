@@ -1,0 +1,33 @@
+specVersion: 0.0.2
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: GunPreOrder
+    network: mainnet
+    source:
+      address: "0x691B35b35E18ad7d0E0CbB97059d2CDA0a457c36"
+      abi: GunPreOrder
+      startBlock: 13117169
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - GunsBought
+        - OwnershipTransferred
+        - Withdrawal
+        - consumerBulkBuy
+      abis:
+        - name: GunPreOrder
+          file: ./abis/GunPreOrder.json
+      eventHandlers:
+        - event: GunsBought(uint256,address,uint8)
+          handler: handleGunsBought
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: Withdrawal(uint256)
+          handler: handleWithdrawal
+        - event: consumerBulkBuy(uint8,uint256,address)
+          handler: handleconsumerBulkBuy
+      file: ./src/mapping.ts
